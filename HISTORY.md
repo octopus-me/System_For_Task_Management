@@ -87,3 +87,49 @@ object UserTable : IntIdTable() {
     val password = varchar("password", 64)
 }
 ```
+
+
+### Database Setting
+
+The following lines in the **configureDatabase** function are responsible for reading the configuration of the database from the **application.yaml**.
+
+```
+val dbConfig = environment.config.config("database")
+val jdbcUrl = dbConfig.property("jdbcUrl").getString()
+val driverClassName = dbConfig.property("driverClassName").getString()
+val username = dbConfig.property("username").getString()
+val password = dbConfig.property("password").getString()
+```
+
+Details:
+
+1. **val dbConfig = environment.config.config("database")**: This line accesses the secction database from the configuration file.  The **enviroment.config** provides access to the configuration defined in the ktor configuration file. The function **config("database")** returns a specific configuration, that is the configuration of the database in this case.
+
+2. **val jdbcUrl = dbConfig.property("jdbcUrl").getString()**: This line sees the feature **jdbcURL** of the database configuration and converts to a string. The 'jdbcUrl' is the JDBC conexion URL that ktor will use to connect with the database.
+
+3. **val driverClassName = dbConfig.property("driverClassName").getString()**: This line reads the feature **driverClassName'** from the database configuration file and converts it to string. **driverClassName** is the name of the JDBC driver class that will be used to connect with the database. e.g 'org.postgresql.Driver' for PostgreSQL.
+
+4. **val username = dbConfig.property("username").getString()** This line reads the feature username and converts to string.
+
+5. **val password = dbConfig.property("password").getString()**
+
+### Exposed Library
+
+Every database connection with Exposed is started by obtaining a connection and creating a transaction.
+
+In this project:
+
+```
+    Database.connect(
+        url = jdbcUrl,
+        driver = driverClassName,
+        user = username,
+        password = password
+    )
+```
+
+```
+    transaction {
+        SchemaUtils.create(UserTable, TaskTable)
+    }
+```
