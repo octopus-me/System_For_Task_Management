@@ -55,3 +55,35 @@ data class User (
 )
 ```
 
+
+### Kotlin 'Object' Declaration
+
+
+In Kotlin, the Object declaration is used to define a singleton: a **class** that have only one instance.
+
+In this project, we will use the Object declaration to create tables.
+
+- taskTable: A table to store the classes
+- userTable: A table to store the users
+
+
+### IntIdTable from the Exposed Library
+
+To create a table with the exposed library we can use the IntIdTable() class.
+
+Then we will create our two tables
+
+```
+object TaskTable : IntIdTable() {
+    val title = varchar("title", 255)
+    val description = text("description")
+    val userId = reference("user_id", UserTable)
+}
+```
+
+```
+object UserTable : IntIdTable() {
+    val username = varchar("username", 50).uniqueIndex()
+    val password = varchar("password", 64)
+}
+```
