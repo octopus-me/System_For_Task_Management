@@ -1,4 +1,8 @@
 package example.com.models
 
-class Task {
-}
+data class Task (
+    val id: Int,
+    val title: String,
+    val description: String,
+    val userId: Int
+)

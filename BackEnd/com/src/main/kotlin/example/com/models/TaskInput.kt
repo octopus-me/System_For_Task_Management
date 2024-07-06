@@ -1,4 +1,7 @@
 package example.com.models
 
-class TaskInput {
-}
+data class TaskInput (
+    val title: String,
+    val description: String,
+    val userId: Int
+)
